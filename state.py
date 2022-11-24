@@ -4,6 +4,8 @@ from typing import cast
 import numpy as np
 from numpy.typing import ArrayLike
 
+epsilon = 1e-12
+
 
 class State:
     def __init__(
@@ -28,7 +30,7 @@ class State:
     def coefficients(self) -> dict[str, complex]:
         result = {}
         for i in range(2**self.num_qubits):
-            if self.vector[i]:
+            if abs(self.vector[i]) > epsilon:
                 result[to_binary(i, digits=self.num_qubits)] = self.vector[i]
         return result
 
