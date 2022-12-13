@@ -16,7 +16,7 @@ class Circuit(Gate):
         return "\n".join(map(repr, self.gates))
 
     def add(self, gate: Gate, qubits: Collection[int] = []) -> None:
-        qubits = qubits or range(self.num_qubits)
+        qubits = qubits or list(reversed(range(self.num_qubits)))
         assert gate.num_qubits <= self.num_qubits
         assert len(qubits) == gate.num_qubits
         assert len(set(qubits)) == gate.num_qubits
@@ -26,8 +26,8 @@ class Circuit(Gate):
         gate = gate.tensor_product(
             Gate("", extra_qubits, np.eye(2**extra_qubits), "│" * extra_qubits),
         )
-        qubits = list(qubits) + list(set(range(self.num_qubits)) - set(qubits))
-        gate = gate.permute(qubits)
+        permutation = list(qubits) + list(set(range(self.num_qubits)) - set(qubits))
+        gate = gate.permute(permutation)
         self.matrix = gate.matrix @ self.matrix
         self.gates.append(gate)
 
