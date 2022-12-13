@@ -1,3 +1,4 @@
+from __future__ import annotations
 from collections.abc import Mapping
 from typing import cast
 
@@ -26,6 +27,12 @@ class State:
             self.vector = np.asarray(vector, dtype=complex)
         assert self.vector.shape == (2**num_qubits,)
         self.vector /= np.linalg.norm(self.vector)
+
+    def tensor_product(self, other: State) -> State:
+        return State(
+            self.num_qubits + other.num_qubits,
+            np.kron(self.vector, other.vector),
+        )
 
     def coefficients(self) -> dict[str, complex]:
         result = {}
@@ -62,6 +69,10 @@ class State:
             p=list(probabilities.values()),
         )
         return cast(str, basis_state)
+
+
+zero = State(num_qubits=1, vector=[1, 0])
+one = State(num_qubits=1, vector=[0, 1])
 
 
 def to_binary(n: int, digits: int) -> str:
