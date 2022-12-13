@@ -1,10 +1,9 @@
 from circuit import Circuit
 from decomposed_circuit import DecomposedCircuit
-from gates import H, X, Z
+from gates import CCZ, H, X
 
 HHH = H.tensor_product(H).tensor_product(H)
 XXX = X.tensor_product(X).tensor_product(X)
-CCZ = Z.control().control()
 
 circuit = Circuit("Grover", num_qubits=3)
 
