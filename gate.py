@@ -54,6 +54,14 @@ class Gate:
             "┿" + self.circuit_symbol,
         )
 
+    def __matmul__(self, other: Gate) -> Gate:
+        assert self.num_qubits == other.num_qubits
+        return Gate(
+            f"{self.name} {other.name}",
+            self.num_qubits,
+            self.matrix @ other.matrix,
+        )
+
     def tensor_product(self, other: Gate) -> Gate:
         if self.name and other.name:
             name = f"{self.name} ⊗ {other.name}"
