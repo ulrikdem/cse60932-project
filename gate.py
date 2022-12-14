@@ -23,6 +23,9 @@ class Gate:
         self.circuit_symbol = circuit_symbol or "╪" * num_qubits
         assert len(self.circuit_symbol) == num_qubits
 
+    def named(self, name: str) -> Gate:
+        return Gate(name, self.num_qubits, self.matrix, self.circuit_symbol)
+
     def __repr__(self) -> str:
         return f"{self.circuit_symbol} {self.name}"
 
